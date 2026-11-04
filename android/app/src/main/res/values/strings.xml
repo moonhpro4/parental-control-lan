@@ -26,4 +26,6 @@
     <string name="dlg_msg">This removes the Parental Control agent, its startup task and all settings from the PC. App locks stop working immediately.</string>
     <string name="dlg_ok">Uninstall</string>
     <string name="dlg_cancel">Cancel</string>
+    <string name="btn_unlock">Unlock PC</string>
+    <string name="pc_unlocked">PC unlocked</string>
 </resources>

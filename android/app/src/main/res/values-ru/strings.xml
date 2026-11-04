@@ -26,4 +26,6 @@
     <string name="dlg_msg">Будут удалены агент родительского контроля, его задача автозапуска и все настройки на ПК. Блокировка приложений прекратится сразу.</string>
     <string name="dlg_ok">Удалить</string>
     <string name="dlg_cancel">Отмена</string>
+    <string name="btn_unlock">Разблокировать ПК</string>
+    <string name="pc_unlocked">ПК разблокирован</string>
 </resources>

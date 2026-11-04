@@ -75,6 +75,9 @@ class MainActivity : AppCompatActivity(), AgentClient.Listener {
         findViewById<Button>(R.id.lockBtn).setOnClickListener {
             if (!client.lock()) toast(getString(R.string.not_connected))
         }
+        findViewById<Button>(R.id.unlockBtn).setOnClickListener {
+            if (!client.unlock()) toast(getString(R.string.not_connected))
+        }
         findViewById<Button>(R.id.refreshBtn).setOnClickListener {
             if (!client.listApps()) toast(getString(R.string.not_connected))
         }
@@ -146,6 +149,17 @@ class MainActivity : AppCompatActivity(), AgentClient.Listener {
 
     override fun onLockResult(ok: Boolean) {
         runOnUiThread { toast(getString(if (ok) R.string.pc_locked else R.string.lock_failed)) }
+    }
+
+    override fun onLockState(locked: Boolean) {
+        runOnUiThread {
+            findViewById<Button>(R.id.lockBtn).isEnabled = !locked
+            findViewById<Button>(R.id.unlockBtn).isEnabled = locked
+        }
+    }
+
+    override fun onUnlockResult(ok: Boolean) {
+        runOnUiThread { if (ok) toast(getString(R.string.pc_unlocked)) }
     }
 
     override fun onUninstalled() {

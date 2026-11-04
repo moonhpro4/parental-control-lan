@@ -26,4 +26,6 @@
     <string name="dlg_msg">سيؤدي هذا إلى إزالة وكيل الرقابة الأبوية ومهمة بدء التشغيل وجميع الإعدادات من الكمبيوتر. سيتوقف قفل التطبيقات فورًا.</string>
     <string name="dlg_ok">إزالة</string>
     <string name="dlg_cancel">إلغاء</string>
+    <string name="btn_unlock">فتح قفل الكمبيوتر</string>
+    <string name="pc_unlocked">تم فتح قفل الكمبيوتر</string>
 </resources>

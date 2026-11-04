@@ -11,6 +11,7 @@ import hmac
 import json
 import logging
 import os
+import re
 import secrets
 import shutil
 import socket
@@ -44,7 +45,7 @@ PROTECTED = {
     "svchost.exe", "smss.exe", "dwm.exe", "system", "registry", "taskhostw.exe", "fontdrvhost.exe",
     "sihost.exe", "ctfmon.exe", "runtimebroker.exe", "searchhost.exe", "startmenuexperiencehost.exe",
     "shellexperiencehost.exe", "logonui.exe", "rundll32.exe", "conhost.exe", "parentalagent.exe",
-    "cmd.exe", "python.exe", "pythonw.exe",
+    "cmd.exe", "python.exe", "pythonw.exe", "parentaloverlay.exe",
 }
 SKIP_NAMES = ("unins", "uninst", "setup", "update", "crash", "helper", "installer", "redist",
               "vc_redist", "elevat", "notificationhelper", "repair")
@@ -123,7 +124,7 @@ def kill_other_instances():
     me = {os.getpid(), os.getppid()}  # onefile bootloader parent shares our image name
     for p in psutil.process_iter(["name"]):
         try:
-            if (p.info["name"] or "").lower() == f"{APP}.exe".lower() and p.pid not in me:
+            if (p.info["name"] or "").lower() in (f"{APP}.exe".lower(), "parentaloverlay.exe") and p.pid not in me:
                 p.kill()
         except Exception:
             pass
@@ -155,6 +156,9 @@ def install():
     time.sleep(1)
     if Path(sys.executable).resolve() != INSTALL_EXE.resolve():
         shutil.copy2(sys.executable, INSTALL_EXE)
+    overlay_src = Path(getattr(sys, "_MEIPASS", ".")) / "ParentalOverlay.exe"
+    if overlay_src.exists():
+        shutil.copy2(overlay_src, INSTALL_DIR / "ParentalOverlay.exe")
 
     # `wiz.app.uninstall` typed in cmd / Win+R: elevates (UAC) and runs the forced uninstall.
     UNINSTALL_CMD.write_text(
@@ -188,6 +192,7 @@ CLEANUP_TASK = "ParentalAgentCleanup"
 
 def uninstall():
     """Remove task, firewall rule, files. Files are deleted by a one-shot SYSTEM task after we exit."""
+    kill_overlays()
     run(["schtasks", "/end", "/tn", APP])
     run(["schtasks", "/delete", "/tn", APP, "/f"])
     run(["netsh", "advfirewall", "firewall", "delete", "rule", f"name={APP}"])
@@ -196,6 +201,7 @@ def uninstall():
         "@echo off\r\n"
         "ping -n 3 127.0.0.1 >nul\r\n"
         f"taskkill /f /im {APP}.exe >nul 2>&1\r\n"
+        "taskkill /f /im ParentalOverlay.exe >nul 2>&1\r\n"
         "ping -n 3 127.0.0.1 >nul\r\n"
         f'rmdir /s /q "{INSTALL_DIR}"\r\n'
         f'rmdir /s /q "{DATA_DIR}"\r\n'
@@ -224,33 +230,99 @@ class State:
             save_config(cfg)
         self.pin = cfg["pin"]
         self.blocked = {b.lower() for b in cfg.get("blocked", [])}
+        self.locked = bool(cfg.get("locked", False))
+        self.lang = cfg.get("lang", "en")
         self.lock = threading.Lock()
 
     def persist(self):
         cfg = load_config()
         cfg["pin"] = self.pin
         cfg["blocked"] = sorted(self.blocked)
+        cfg["locked"] = self.locked
+        cfg["lang"] = self.lang
         save_config(cfg)
 
 
 def monitor_loop(state):
     me = os.getpid()
+    last_launch = 0.0
     while True:
         try:
             with state.lock:
                 blocked = set(state.blocked)
-            if blocked:
+                locked = state.locked
+                lang = state.lang
+            if blocked or locked:
+                overlay_up = False
                 for p in psutil.process_iter(["name"]):
                     try:
                         n = (p.info["name"] or "").lower()
-                        if n in blocked and n not in PROTECTED and p.pid != me:
+                        if locked and n == "taskmgr.exe":
+                            p.kill()
+                        elif n == "parentaloverlay.exe":
+                            overlay_up = True
+                        elif n in blocked and n not in PROTECTED and p.pid != me:
                             p.kill()
                             log.info("killed %s (%s)", n, p.pid)
                     except (psutil.NoSuchProcess, psutil.AccessDenied):
                         pass
+                if locked and not overlay_up and time.time() - last_launch > 1.5:
+                    last_launch = time.time()
+                    launch_overlay(lang)  # watchdog: bring the lock screen back if it was closed
         except Exception:
             log.exception("monitor error")
         time.sleep(0.2)  # ~5 scans per second
+
+
+def launch_in_user_session(cmdline, exe):
+    """SYSTEM lives in session 0; start a process on the logged-in user's desktop."""
+    import win32con, win32process, win32profile, win32ts
+    sid = win32ts.WTSGetActiveConsoleSessionId()
+    if sid == 0xFFFFFFFF:
+        return False
+    token = win32ts.WTSQueryUserToken(sid)
+    env = win32profile.CreateEnvironmentBlock(token, False)
+    si = win32process.STARTUPINFO()
+    si.lpDesktop = "winsta0\\default"
+    win32process.CreateProcessAsUser(token, exe, cmdline, None, None, False,
+                                     win32con.CREATE_NO_WINDOW | 0x400, env, str(INSTALL_DIR), si)
+    return True
+
+
+def launch_overlay(lang):
+    exe = INSTALL_DIR / "ParentalOverlay.exe"
+    if not exe.exists():
+        return False
+    lang = re.sub(r"[^a-z]", "", (lang or "en").lower())[:5] or "en"
+    try:
+        return launch_in_user_session(f'"{exe}" --lang {lang}', str(exe))
+    except Exception:
+        log.exception("overlay launch failed")
+        return False
+
+
+def kill_overlays():
+    for p in psutil.process_iter(["name"]):
+        try:
+            if (p.info["name"] or "").lower() == "parentaloverlay.exe":
+                p.kill()
+        except Exception:
+            pass
+
+
+def set_lock(state, locked, lang=None):
+    with state.lock:
+        state.locked = locked
+        if lang:
+            state.lang = re.sub(r"[^a-zA-Z]", "", lang.split("-")[0])[:5].lower() or "en"
+        state.persist()
+        cur_lang = state.lang
+    if locked:
+        if not launch_overlay(cur_lang):
+            return lock_workstation()  # fallback: normal Windows lock screen
+    else:
+        kill_overlays()
+    return True
 
 
 def lock_workstation():
@@ -409,6 +481,9 @@ async def serve(state):
         with state.lock:
             return json.dumps({"type": "blocked", "blocked": sorted(state.blocked)})
 
+    def lock_msg():
+        return json.dumps({"type": "lock_state", "locked": state.locked})
+
     async def handler(ws):
         ip = ws.remote_address[0] if ws.remote_address else "?"
         if is_locked_out(ip):
@@ -435,6 +510,7 @@ async def serve(state):
                         fails.pop(ip, None)
                         await reply(ws, {"type": "auth", "ok": True})
                         await ws.send(blocked_msg())
+                        await ws.send(lock_msg())
                     else:
                         note_fail(ip)
                         await reply(ws, {"type": "auth", "ok": False})
@@ -445,8 +521,13 @@ async def serve(state):
                 if cmd == "ping":
                     await reply(ws, {"type": "pong"})
                 elif cmd == "lock":
-                    ok = await loop.run_in_executor(None, lock_workstation)
+                    ok = await loop.run_in_executor(None, set_lock, state, True, msg.get("lang"))
                     await reply(ws, {"type": "lock", "ok": ok})
+                    websockets.broadcast(clients, lock_msg())
+                elif cmd == "unlock":
+                    ok = await loop.run_in_executor(None, set_lock, state, False, None)
+                    await reply(ws, {"type": "unlock", "ok": ok})
+                    websockets.broadcast(clients, lock_msg())
                 elif cmd == "list_apps":
                     apps = await loop.run_in_executor(None, installed_apps)
                     with state.lock:

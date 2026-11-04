@@ -26,4 +26,6 @@
     <string name="dlg_msg">Dadurch werden der Kindersicherungs-Agent, seine Startaufgabe und alle Einstellungen vom PC entfernt. App-Sperren enden sofort.</string>
     <string name="dlg_ok">Deinstallieren</string>
     <string name="dlg_cancel">Abbrechen</string>
+    <string name="btn_unlock">PC entsperren</string>
+    <string name="pc_unlocked">PC entsperrt</string>
 </resources>

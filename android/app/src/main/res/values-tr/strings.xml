@@ -26,4 +26,6 @@
     <string name="dlg_msg">Bu işlem ebeveyn denetimi aracını, başlangıç görevini ve tüm ayarları bilgisayardan kaldırır. Uygulama kilitleri hemen durur.</string>
     <string name="dlg_ok">Kaldır</string>
     <string name="dlg_cancel">İptal</string>
+    <string name="btn_unlock">Bilgisayarın kilidini aç</string>
+    <string name="pc_unlocked">Bilgisayarın kilidi açıldı</string>
 </resources>

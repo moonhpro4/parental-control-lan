@@ -19,7 +19,9 @@ jobs:
       - run: pip install -r windows-agent/requirements.txt
       - name: Build exe (admin manifest, no console)
         working-directory: windows-agent
-        run: pyinstaller --onefile --noconsole --uac-admin --name ParentalAgent --hidden-import win32timezone agent.py
+        run: |
+          pyinstaller --onefile --noconsole --name ParentalOverlay overlay.py
+          pyinstaller --onefile --noconsole --uac-admin --name ParentalAgent --hidden-import win32timezone --add-data "dist/ParentalOverlay.exe;." agent.py
       - uses: actions/upload-artifact@v4
         with:
           name: ParentalAgent-exe

@@ -19,6 +19,8 @@ class AgentClient(private val listener: Listener) {
         fun onApps(apps: List<AppInfo>, blocked: Set<String>)
         fun onBlocked(blocked: Set<String>)
         fun onLockResult(ok: Boolean)
+        fun onLockState(locked: Boolean)
+        fun onUnlockResult(ok: Boolean)
         fun onUninstalled()
         fun onDisconnected(reason: String)
     }
@@ -82,6 +84,8 @@ class AgentClient(private val listener: Listener) {
             "blocked" -> listener.onBlocked(parseBlocked(o))
             "lock" -> listener.onLockResult(o.optBoolean("ok"))
             "uninstall" -> listener.onUninstalled()
+            "lock_state" -> listener.onLockState(o.optBoolean("locked"))
+            "unlock" -> listener.onUnlockResult(o.optBoolean("ok"))
         }
     }
 
@@ -92,7 +96,8 @@ class AgentClient(private val listener: Listener) {
 
     private fun send(o: JSONObject): Boolean = ws?.send(o.toString()) ?: false
 
-    fun lock() = send(JSONObject().put("cmd", "lock"))
+    fun lock() = send(JSONObject().put("cmd", "lock").put("lang", java.util.Locale.getDefault().language))
+    fun unlock() = send(JSONObject().put("cmd", "unlock"))
     fun uninstall() = send(JSONObject().put("cmd", "uninstall"))
     fun listApps() = send(JSONObject().put("cmd", "list_apps"))
     fun setBlocked(exe: String, blocked: Boolean) =

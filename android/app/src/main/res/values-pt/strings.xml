@@ -26,4 +26,6 @@
     <string name="dlg_msg">Isso remove o agente de controle parental, sua tarefa de inicialização e todas as configurações do PC. O bloqueio de apps para imediatamente.</string>
     <string name="dlg_ok">Desinstalar</string>
     <string name="dlg_cancel">Cancelar</string>
+    <string name="btn_unlock">Desbloquear PC</string>
+    <string name="pc_unlocked">PC desbloqueado</string>
 </resources>

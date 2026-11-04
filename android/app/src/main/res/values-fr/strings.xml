@@ -26,4 +26,6 @@
     <string name="dlg_msg">Cela supprime l\'agent de contrôle parental, sa tâche de démarrage et tous les paramètres du PC. Le verrouillage des applications s\'arrête immédiatement.</string>
     <string name="dlg_ok">Désinstaller</string>
     <string name="dlg_cancel">Annuler</string>
+    <string name="btn_unlock">Déverrouiller le PC</string>
+    <string name="pc_unlocked">PC déverrouillé</string>
 </resources>
