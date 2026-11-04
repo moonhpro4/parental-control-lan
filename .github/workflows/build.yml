@@ -1,0 +1,63 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  windows-agent:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r windows-agent/requirements.txt
+      - name: Build exe (admin manifest, no console)
+        working-directory: windows-agent
+        run: pyinstaller --onefile --noconsole --uac-admin --name ParentalAgent --hidden-import win32timezone agent.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ParentalAgent-exe
+          path: windows-agent/dist/ParentalAgent.exe
+
+  android-app:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.7"
+      - name: Build debug APK
+        working-directory: android
+        run: gradle assembleDebug --no-daemon
+      - run: cp android/app/build/outputs/apk/debug/app-debug.apk ParentalControl.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ParentalControl-apk
+          path: ParentalControl.apk
+
+  release:
+    needs: [windows-agent, android-app]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: out
+          merge-multiple: true
+      - name: Publish rolling release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest --cleanup-tag -y --repo "$GITHUB_REPOSITORY" || true
+          gh release create latest out/ParentalAgent.exe out/ParentalControl.apk \
+            --repo "$GITHUB_REPOSITORY" --title "Latest build" \
+            --notes "ParentalAgent.exe (Windows) and ParentalControl.apk (Android)"
