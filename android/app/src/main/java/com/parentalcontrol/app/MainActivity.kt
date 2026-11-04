@@ -1,6 +1,9 @@
 package com.parentalcontrol.app
 
+import android.app.AlertDialog
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -75,6 +78,19 @@ class MainActivity : AppCompatActivity(), AgentClient.Listener {
         findViewById<Button>(R.id.refreshBtn).setOnClickListener {
             if (!client.listApps()) toast("Not connected")
         }
+        findViewById<EditText>(R.id.searchInput).addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) {}
+            override fun onTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) {}
+            override fun afterTextChanged(s: Editable?) { adapter.setQuery(s?.toString() ?: "") }
+        })
+        findViewById<Button>(R.id.uninstallBtn).setOnClickListener {
+            AlertDialog.Builder(this)
+                .setTitle("Uninstall agent?")
+                .setMessage("This removes the Parental Control agent, its startup task and all settings from the PC. App locks stop working immediately.")
+                .setPositiveButton("Uninstall") { _, _ -> if (!client.uninstall()) toast("Not connected") }
+                .setNegativeButton("Cancel", null)
+                .show()
+        }
         findViewById<Button>(R.id.unpairBtn).setOnClickListener {
             wantConnection = false
             everAuthed = false
@@ -130,6 +146,15 @@ class MainActivity : AppCompatActivity(), AgentClient.Listener {
 
     override fun onLockResult(ok: Boolean) {
         runOnUiThread { toast(if (ok) "PC locked" else "Lock failed") }
+    }
+
+    override fun onUninstalled() {
+        runOnUiThread {
+            wantConnection = false
+            everAuthed = false
+            client.close()
+            showPair("Agent was uninstalled from the PC.")
+        }
     }
 
     override fun onDisconnected(reason: String) {

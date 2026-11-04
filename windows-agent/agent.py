@@ -176,6 +176,37 @@ def install():
            f"Enter these in the Android app. It starts automatically at every boot.")
 
 
+CLEANUP_TASK = "ParentalAgentCleanup"
+
+
+def uninstall():
+    """Remove task, firewall rule, files. Files are deleted by a one-shot SYSTEM task after we exit."""
+    run(["schtasks", "/end", "/tn", APP])
+    run(["schtasks", "/delete", "/tn", APP, "/f"])
+    run(["netsh", "advfirewall", "firewall", "delete", "rule", f"name={APP}"])
+    bat = Path(WIN_DIR) / "Temp" / "pa_cleanup.bat"
+    bat.write_text(
+        "@echo off\r\n"
+        "ping -n 3 127.0.0.1 >nul\r\n"
+        f"taskkill /f /im {APP}.exe >nul 2>&1\r\n"
+        "ping -n 3 127.0.0.1 >nul\r\n"
+        f'rmdir /s /q "{INSTALL_DIR}"\r\n'
+        f'rmdir /s /q "{DATA_DIR}"\r\n'
+        f"schtasks /delete /tn {CLEANUP_TASK} /f\r\n"
+        'del "%~f0"\r\n', "ascii")
+    run(["schtasks", "/create", "/tn", CLEANUP_TASK, "/tr", str(bat), "/sc", "once", "/st", "00:00",
+         "/ru", "SYSTEM", "/rl", "highest", "/f"])
+    run(["schtasks", "/run", "/tn", CLEANUP_TASK])
+
+
+def uninstall_cli():
+    """`ParentalAgent.exe wiz.app.uninstall` - silent forced uninstall (needs admin; manifest prompts for it)."""
+    if not is_admin():
+        return 1
+    uninstall()
+    return 0
+
+
 # ----------------------------------------------------------------------------- service
 class State:
     def __init__(self):
@@ -313,6 +344,32 @@ def installed_apps():
         except Exception:
             pass
 
+    # Folder scan so that apps without registry entries (portable apps, games, per-user installs) show up too.
+    skip_dirs = {"windowsapps", "common files", "installer", "windows defender", "windows nt",
+                 "microsoft.net", "reference assemblies", "windowspowershell", "temp", "cache", "crashpad"}
+    roots = [os.environ.get("ProgramFiles"), os.environ.get("ProgramFiles(x86)")]
+    users = Path(os.environ.get("SystemDrive", "C:") + "\\Users")
+    try:
+        for u in users.iterdir():
+            roots.append(str(u / "AppData" / "Local" / "Programs"))
+            roots.append(str(u / "AppData" / "Local"))
+    except OSError:
+        pass
+    count = 0
+    for root in filter(None, roots):
+        if not os.path.isdir(root):
+            continue
+        base_depth = root.rstrip("\\").count("\\")
+        for dirpath, dirnames, filenames in os.walk(root):
+            depth = dirpath.count("\\") - base_depth
+            dirnames[:] = [d for d in dirnames if d.lower() not in skip_dirs] if depth < 3 else []
+            for fn in filenames:
+                if fn.lower().endswith(".exe"):
+                    add(None, fn)
+                    count += 1
+            if count > 4000:
+                break
+
     return sorted(({"name": v, "exe": k} for k, v in found.items()), key=lambda a: a["name"].lower())
 
 
@@ -392,6 +449,10 @@ async def serve(state):
                         blocked = sorted(state.blocked)
                     apps.sort(key=lambda a: a["name"].lower())
                     await reply(ws, {"type": "apps", "apps": apps, "blocked": blocked})
+                elif cmd == "uninstall":
+                    await loop.run_in_executor(None, uninstall)
+                    await reply(ws, {"type": "uninstall", "ok": True})
+                    loop.call_later(0.5, os._exit, 0)
                 elif cmd == "set_block":
                     exe = os.path.basename(str(msg.get("exe", ""))).strip().lower()
                     if not exe.endswith(".exe") or exe in PROTECTED:
@@ -432,6 +493,8 @@ def run_service():
 
 
 if __name__ == "__main__":
+    if "wiz.app.uninstall" in sys.argv or "--uninstall" in sys.argv:
+        sys.exit(uninstall_cli())
     if "--service" in sys.argv:
         run_service()
     else:

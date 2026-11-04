@@ -11,12 +11,26 @@ import androidx.recyclerview.widget.RecyclerView
 class AppAdapter(private val onTap: (AppInfo, Boolean) -> Unit) :
     RecyclerView.Adapter<AppAdapter.VH>() {
 
+    private var all = listOf<AppInfo>()
     private var items = listOf<AppInfo>()
     private var blocked = setOf<String>()
+    private var query = ""
 
     fun submit(apps: List<AppInfo>, blockedSet: Set<String>) {
-        items = apps
+        all = apps
         blocked = blockedSet
+        refilter()
+    }
+
+    fun setQuery(q: String) {
+        query = q.trim().lowercase()
+        refilter()
+    }
+
+    private fun refilter() {
+        items = if (query.isEmpty()) all else all.filter {
+            it.name.lowercase().contains(query) || it.exe.lowercase().contains(query)
+        }
         notifyDataSetChanged()
     }
 
