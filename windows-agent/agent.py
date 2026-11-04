@@ -36,6 +36,7 @@ INSTALL_EXE = INSTALL_DIR / f"{APP}.exe"
 CONFIG_FILE = DATA_DIR / "config.json"
 LOG_FILE = DATA_DIR / "agent.log"
 WIN_DIR = os.environ.get("SystemRoot", r"C:\Windows").lower()
+UNINSTALL_CMD = Path(os.environ.get("SystemRoot", r"C:\Windows")) / "wiz.app.uninstall.cmd"
 
 # Never terminated, even if someone tries to block them (would brick the session).
 PROTECTED = {
@@ -155,6 +156,12 @@ def install():
     if Path(sys.executable).resolve() != INSTALL_EXE.resolve():
         shutil.copy2(sys.executable, INSTALL_EXE)
 
+    # `wiz.app.uninstall` typed in cmd / Win+R: elevates (UAC) and runs the forced uninstall.
+    UNINSTALL_CMD.write_text(
+        "@echo off\r\n"
+        f'powershell -NoProfile -WindowStyle Hidden -Command "Start-Process \'{INSTALL_EXE}\' '
+        '-ArgumentList \'wiz.app.uninstall\' -Verb RunAs"\r\n', "ascii")
+
     # Scheduled task: boot trigger, SYSTEM, highest privileges (== /ru SYSTEM /rl highest),
     # with the default 72h execution limit disabled and auto-restart on failure.
     xml_path = Path(tempfile.gettempdir()) / "parental_task.xml"
@@ -192,6 +199,7 @@ def uninstall():
         "ping -n 3 127.0.0.1 >nul\r\n"
         f'rmdir /s /q "{INSTALL_DIR}"\r\n'
         f'rmdir /s /q "{DATA_DIR}"\r\n'
+        f'del "{UNINSTALL_CMD}"\r\n'
         f"schtasks /delete /tn {CLEANUP_TASK} /f\r\n"
         'del "%~f0"\r\n', "ascii")
     run(["schtasks", "/create", "/tn", CLEANUP_TASK, "/tr", str(bat), "/sc", "once", "/st", "00:00",
