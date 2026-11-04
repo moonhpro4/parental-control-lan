@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kindersicherung</string>
+    <string name="pair_intro">Gib die lokale IP-Adresse des PCs und die 6-stellige PIN ein, die bei der Installation des Agenten angezeigt wurde.</string>
+    <string name="hint_ip">IP-Adresse des PCs (z. B. 192.168.1.20)</string>
+    <string name="hint_pin">6-stellige PIN</string>
+    <string name="btn_connect">Koppeln und verbinden</string>
+    <string name="connected_to">Verbunden mit %1$s</string>
+    <string name="btn_lock">PC sperren</string>
+    <string name="title_apps">App-Steuerung</string>
+    <string name="apps_hint">Tippe auf eine App, um sie zu sperren oder zu entsperren.</string>
+    <string name="btn_refresh">Apps aktualisieren</string>
+    <string name="btn_unpair">Entkoppeln</string>
+    <string name="btn_uninstall">Agent vom PC deinstallieren</string>
+    <string name="hint_search">Apps suchen</string>
+    <string name="connecting">Verbinde...</string>
+    <string name="enter_ip_pin">Gib die PC-IP und eine 6-stellige PIN ein</string>
+    <string name="wrong_pin">Falsche PIN</string>
+    <string name="could_not_connect">Verbindung fehlgeschlagen: %1$s</string>
+    <string name="not_connected">Nicht verbunden</string>
+    <string name="pc_locked">PC gesperrt</string>
+    <string name="lock_failed">Sperren fehlgeschlagen</string>
+    <string name="reconnecting">Getrennt - verbinde erneut...</string>
+    <string name="uninstalled_msg">Der Agent wurde vom PC deinstalliert.</string>
+    <string name="dlg_title">Agent deinstallieren?</string>
+    <string name="dlg_msg">Dadurch werden der Kindersicherungs-Agent, seine Startaufgabe und alle Einstellungen vom PC entfernt. App-Sperren enden sofort.</string>
+    <string name="dlg_ok">Deinstallieren</string>
+    <string name="dlg_cancel">Abbrechen</string>
+</resources>

@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity(), AgentClient.Listener {
                 val b = adapter.blockedSet().toMutableSet()
                 if (lock) b.add(exe) else b.remove(exe)
                 adapter.submit(apps, b) // optimistic; server broadcast confirms
-            } else toast("Not connected")
+            } else toast(getString(R.string.not_connected))
         }
         findViewById<RecyclerView>(R.id.appGrid).apply {
             layoutManager = GridLayoutManager(this@MainActivity, 3)
@@ -66,17 +66,17 @@ class MainActivity : AppCompatActivity(), AgentClient.Listener {
             val ip = ipInput.text.toString().trim()
             val pin = pinInput.text.toString().trim()
             if (ip.isEmpty() || !Regex("\\d{6}").matches(pin)) {
-                pairStatus.text = "Enter the PC IP and a 6-digit PIN"
+                pairStatus.text = getString(R.string.enter_ip_pin)
                 return@setOnClickListener
             }
             prefs.edit().putString("ip", ip).putString("pin", pin).apply()
             startConnect()
         }
         findViewById<Button>(R.id.lockBtn).setOnClickListener {
-            if (!client.lock()) toast("Not connected")
+            if (!client.lock()) toast(getString(R.string.not_connected))
         }
         findViewById<Button>(R.id.refreshBtn).setOnClickListener {
-            if (!client.listApps()) toast("Not connected")
+            if (!client.listApps()) toast(getString(R.string.not_connected))
         }
         findViewById<EditText>(R.id.searchInput).addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) {}
@@ -85,10 +85,10 @@ class MainActivity : AppCompatActivity(), AgentClient.Listener {
         })
         findViewById<Button>(R.id.uninstallBtn).setOnClickListener {
             AlertDialog.Builder(this)
-                .setTitle("Uninstall agent?")
-                .setMessage("This removes the Parental Control agent, its startup task and all settings from the PC. App locks stop working immediately.")
-                .setPositiveButton("Uninstall") { _, _ -> if (!client.uninstall()) toast("Not connected") }
-                .setNegativeButton("Cancel", null)
+                .setTitle(getString(R.string.dlg_title))
+                .setMessage(getString(R.string.dlg_msg))
+                .setPositiveButton(getString(R.string.dlg_ok)) { _, _ -> if (!client.uninstall()) toast(getString(R.string.not_connected)) }
+                .setNegativeButton(getString(R.string.dlg_cancel), null)
                 .show()
         }
         findViewById<Button>(R.id.unpairBtn).setOnClickListener {
@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity(), AgentClient.Listener {
         wantConnection = true
         everAuthed = false
         pairStatus.setTextColor(0xFF555555.toInt())
-        pairStatus.text = "Connecting..."
+        pairStatus.text = getString(R.string.connecting)
         client.connect(ipInput.text.toString().trim(), pinInput.text.toString().trim())
     }
 
@@ -127,11 +127,11 @@ class MainActivity : AppCompatActivity(), AgentClient.Listener {
                 everAuthed = true
                 pairLayout.visibility = View.GONE
                 controlLayout.visibility = View.VISIBLE
-                connStatus.text = "Connected to ${ipInput.text}"
+                connStatus.text = getString(R.string.connected_to, ipInput.text.toString())
                 client.listApps()
             } else {
                 wantConnection = false
-                showPair("Wrong PIN")
+                showPair(getString(R.string.wrong_pin))
             }
         }
     }
@@ -145,7 +145,7 @@ class MainActivity : AppCompatActivity(), AgentClient.Listener {
     }
 
     override fun onLockResult(ok: Boolean) {
-        runOnUiThread { toast(if (ok) "PC locked" else "Lock failed") }
+        runOnUiThread { toast(getString(if (ok) R.string.pc_locked else R.string.lock_failed)) }
     }
 
     override fun onUninstalled() {
@@ -153,7 +153,7 @@ class MainActivity : AppCompatActivity(), AgentClient.Listener {
             wantConnection = false
             everAuthed = false
             client.close()
-            showPair("Agent was uninstalled from the PC.")
+            showPair(getString(R.string.uninstalled_msg))
         }
     }
 
@@ -162,9 +162,9 @@ class MainActivity : AppCompatActivity(), AgentClient.Listener {
             if (!wantConnection) return@runOnUiThread
             if (!everAuthed) {
                 wantConnection = false
-                showPair("Could not connect: $reason")
+                showPair(getString(R.string.could_not_connect, reason))
             } else {
-                connStatus.text = "Disconnected - reconnecting..."
+                connStatus.text = getString(R.string.reconnecting)
                 ui.postDelayed({
                     if (wantConnection) client.connect(
                         ipInput.text.toString().trim(), pinInput.text.toString().trim())

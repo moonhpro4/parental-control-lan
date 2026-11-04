@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Control parental</string>
+    <string name="pair_intro">Introduce la dirección IP local del PC y el PIN de 6 dígitos mostrado al instalar el agente.</string>
+    <string name="hint_ip">IP del PC (p. ej. 192.168.1.20)</string>
+    <string name="hint_pin">PIN de 6 dígitos</string>
+    <string name="btn_connect">Vincular y conectar</string>
+    <string name="connected_to">Conectado a %1$s</string>
+    <string name="btn_lock">Bloquear PC</string>
+    <string name="title_apps">Control de aplicaciones</string>
+    <string name="apps_hint">Toca una aplicación para bloquearla o desbloquearla.</string>
+    <string name="btn_refresh">Actualizar apps</string>
+    <string name="btn_unpair">Desvincular</string>
+    <string name="btn_uninstall">Desinstalar agente del PC</string>
+    <string name="hint_search">Buscar apps</string>
+    <string name="connecting">Conectando...</string>
+    <string name="enter_ip_pin">Introduce la IP del PC y un PIN de 6 dígitos</string>
+    <string name="wrong_pin">PIN incorrecto</string>
+    <string name="could_not_connect">No se pudo conectar: %1$s</string>
+    <string name="not_connected">No conectado</string>
+    <string name="pc_locked">PC bloqueado</string>
+    <string name="lock_failed">Error al bloquear</string>
+    <string name="reconnecting">Desconectado - reconectando...</string>
+    <string name="uninstalled_msg">El agente se desinstaló del PC.</string>
+    <string name="dlg_title">¿Desinstalar el agente?</string>
+    <string name="dlg_msg">Esto elimina el agente de control parental, su tarea de inicio y todos los ajustes del PC. El bloqueo de aplicaciones se detiene al instante.</string>
+    <string name="dlg_ok">Desinstalar</string>
+    <string name="dlg_cancel">Cancelar</string>
+</resources>

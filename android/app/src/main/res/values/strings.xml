@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Parental Control</string>
+    <string name="pair_intro">Enter the PC\'s local IP address and the 6-digit PIN shown when the agent was installed.</string>
+    <string name="hint_ip">PC IP address (e.g. 192.168.1.20)</string>
+    <string name="hint_pin">6-digit PIN</string>
+    <string name="btn_connect">Pair and connect</string>
+    <string name="connected_to">Connected to %1$s</string>
+    <string name="btn_lock">Lock PC</string>
+    <string name="title_apps">Application Control</string>
+    <string name="apps_hint">Tap an app to lock or unlock it.</string>
+    <string name="btn_refresh">Refresh apps</string>
+    <string name="btn_unpair">Unpair</string>
+    <string name="btn_uninstall">Uninstall agent from PC</string>
+    <string name="hint_search">Search apps</string>
+    <string name="connecting">Connecting...</string>
+    <string name="enter_ip_pin">Enter the PC IP and a 6-digit PIN</string>
+    <string name="wrong_pin">Wrong PIN</string>
+    <string name="could_not_connect">Could not connect: %1$s</string>
+    <string name="not_connected">Not connected</string>
+    <string name="pc_locked">PC locked</string>
+    <string name="lock_failed">Lock failed</string>
+    <string name="reconnecting">Disconnected - reconnecting...</string>
+    <string name="uninstalled_msg">Agent was uninstalled from the PC.</string>
+    <string name="dlg_title">Uninstall agent?</string>
+    <string name="dlg_msg">This removes the Parental Control agent, its startup task and all settings from the PC. App locks stop working immediately.</string>
+    <string name="dlg_ok">Uninstall</string>
+    <string name="dlg_cancel">Cancel</string>
+</resources>

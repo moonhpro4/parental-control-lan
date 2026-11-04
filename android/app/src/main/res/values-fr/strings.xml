@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Contrôle parental</string>
+    <string name="pair_intro">Saisissez l\'adresse IP locale du PC et le code PIN à 6 chiffres affiché lors de l\'installation de l\'agent.</string>
+    <string name="hint_ip">Adresse IP du PC (ex. 192.168.1.20)</string>
+    <string name="hint_pin">Code PIN à 6 chiffres</string>
+    <string name="btn_connect">Associer et connecter</string>
+    <string name="connected_to">Connecté à %1$s</string>
+    <string name="btn_lock">Verrouiller le PC</string>
+    <string name="title_apps">Contrôle des applications</string>
+    <string name="apps_hint">Touchez une application pour la verrouiller ou la déverrouiller.</string>
+    <string name="btn_refresh">Actualiser les applis</string>
+    <string name="btn_unpair">Dissocier</string>
+    <string name="btn_uninstall">Désinstaller l\'agent du PC</string>
+    <string name="hint_search">Rechercher une appli</string>
+    <string name="connecting">Connexion...</string>
+    <string name="enter_ip_pin">Saisissez l\'IP du PC et un code PIN à 6 chiffres</string>
+    <string name="wrong_pin">Code PIN incorrect</string>
+    <string name="could_not_connect">Connexion impossible : %1$s</string>
+    <string name="not_connected">Non connecté</string>
+    <string name="pc_locked">PC verrouillé</string>
+    <string name="lock_failed">Échec du verrouillage</string>
+    <string name="reconnecting">Déconnecté - reconnexion...</string>
+    <string name="uninstalled_msg">L\'agent a été désinstallé du PC.</string>
+    <string name="dlg_title">Désinstaller l\'agent ?</string>
+    <string name="dlg_msg">Cela supprime l\'agent de contrôle parental, sa tâche de démarrage et tous les paramètres du PC. Le verrouillage des applications s\'arrête immédiatement.</string>
+    <string name="dlg_ok">Désinstaller</string>
+    <string name="dlg_cancel">Annuler</string>
+</resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Controle parental</string>
+    <string name="pair_intro">Digite o endereço IP local do PC e o PIN de 6 dígitos exibido na instalação do agente.</string>
+    <string name="hint_ip">IP do PC (ex.: 192.168.1.20)</string>
+    <string name="hint_pin">PIN de 6 dígitos</string>
+    <string name="btn_connect">Parear e conectar</string>
+    <string name="connected_to">Conectado a %1$s</string>
+    <string name="btn_lock">Bloquear PC</string>
+    <string name="title_apps">Controle de aplicativos</string>
+    <string name="apps_hint">Toque em um aplicativo para bloqueá-lo ou desbloqueá-lo.</string>
+    <string name="btn_refresh">Atualizar apps</string>
+    <string name="btn_unpair">Desparear</string>
+    <string name="btn_uninstall">Desinstalar agente do PC</string>
+    <string name="hint_search">Buscar apps</string>
+    <string name="connecting">Conectando...</string>
+    <string name="enter_ip_pin">Digite o IP do PC e um PIN de 6 dígitos</string>
+    <string name="wrong_pin">PIN incorreto</string>
+    <string name="could_not_connect">Não foi possível conectar: %1$s</string>
+    <string name="not_connected">Não conectado</string>
+    <string name="pc_locked">PC bloqueado</string>
+    <string name="lock_failed">Falha ao bloquear</string>
+    <string name="reconnecting">Desconectado - reconectando...</string>
+    <string name="uninstalled_msg">O agente foi desinstalado do PC.</string>
+    <string name="dlg_title">Desinstalar o agente?</string>
+    <string name="dlg_msg">Isso remove o agente de controle parental, sua tarefa de inicialização e todas as configurações do PC. O bloqueio de apps para imediatamente.</string>
+    <string name="dlg_ok">Desinstalar</string>
+    <string name="dlg_cancel">Cancelar</string>
+</resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ebeveyn Denetimi</string>
+    <string name="pair_intro">Bilgisayarın yerel IP adresini ve aracı yüklerken gösterilen 6 haneli PIN\'i girin.</string>
+    <string name="hint_ip">Bilgisayar IP adresi (ör. 192.168.1.20)</string>
+    <string name="hint_pin">6 haneli PIN</string>
+    <string name="btn_connect">Eşleştir ve bağlan</string>
+    <string name="connected_to">%1$s cihazına bağlandı</string>
+    <string name="btn_lock">Bilgisayarı kilitle</string>
+    <string name="title_apps">Uygulama Denetimi</string>
+    <string name="apps_hint">Bir uygulamayı kilitlemek veya açmak için dokunun.</string>
+    <string name="btn_refresh">Uygulamaları yenile</string>
+    <string name="btn_unpair">Eşleşmeyi kaldır</string>
+    <string name="btn_uninstall">Aracı bilgisayardan kaldır</string>
+    <string name="hint_search">Uygulama ara</string>
+    <string name="connecting">Bağlanılıyor...</string>
+    <string name="enter_ip_pin">Bilgisayar IP\'sini ve 6 haneli bir PIN girin</string>
+    <string name="wrong_pin">Yanlış PIN</string>
+    <string name="could_not_connect">Bağlanılamadı: %1$s</string>
+    <string name="not_connected">Bağlı değil</string>
+    <string name="pc_locked">Bilgisayar kilitlendi</string>
+    <string name="lock_failed">Kilitleme başarısız</string>
+    <string name="reconnecting">Bağlantı koptu - yeniden bağlanılıyor...</string>
+    <string name="uninstalled_msg">Araç bilgisayardan kaldırıldı.</string>
+    <string name="dlg_title">Araç kaldırılsın mı?</string>
+    <string name="dlg_msg">Bu işlem ebeveyn denetimi aracını, başlangıç görevini ve tüm ayarları bilgisayardan kaldırır. Uygulama kilitleri hemen durur.</string>
+    <string name="dlg_ok">Kaldır</string>
+    <string name="dlg_cancel">İptal</string>
+</resources>

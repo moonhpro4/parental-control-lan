@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Родительский контроль</string>
+    <string name="pair_intro">Введите локальный IP-адрес ПК и 6-значный PIN-код, показанный при установке агента.</string>
+    <string name="hint_ip">IP-адрес ПК (напр., 192.168.1.20)</string>
+    <string name="hint_pin">6-значный PIN-код</string>
+    <string name="btn_connect">Связать и подключиться</string>
+    <string name="connected_to">Подключено к %1$s</string>
+    <string name="btn_lock">Заблокировать ПК</string>
+    <string name="title_apps">Управление приложениями</string>
+    <string name="apps_hint">Нажмите на приложение, чтобы заблокировать или разблокировать его.</string>
+    <string name="btn_refresh">Обновить список</string>
+    <string name="btn_unpair">Отвязать</string>
+    <string name="btn_uninstall">Удалить агент с ПК</string>
+    <string name="hint_search">Поиск приложений</string>
+    <string name="connecting">Подключение...</string>
+    <string name="enter_ip_pin">Введите IP ПК и 6-значный PIN-код</string>
+    <string name="wrong_pin">Неверный PIN-код</string>
+    <string name="could_not_connect">Не удалось подключиться: %1$s</string>
+    <string name="not_connected">Нет подключения</string>
+    <string name="pc_locked">ПК заблокирован</string>
+    <string name="lock_failed">Не удалось заблокировать</string>
+    <string name="reconnecting">Соединение потеряно - переподключение...</string>
+    <string name="uninstalled_msg">Агент удалён с ПК.</string>
+    <string name="dlg_title">Удалить агент?</string>
+    <string name="dlg_msg">Будут удалены агент родительского контроля, его задача автозапуска и все настройки на ПК. Блокировка приложений прекратится сразу.</string>
+    <string name="dlg_ok">Удалить</string>
+    <string name="dlg_cancel">Отмена</string>
+</resources>

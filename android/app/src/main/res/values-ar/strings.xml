@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">الرقابة الأبوية</string>
+    <string name="pair_intro">أدخل عنوان IP المحلي للكمبيوتر ورمز PIN المكوّن من 6 أرقام الذي ظهر عند تثبيت الوكيل.</string>
+    <string name="hint_ip">عنوان IP للكمبيوتر (مثال 192.168.1.20)</string>
+    <string name="hint_pin">رمز PIN من 6 أرقام</string>
+    <string name="btn_connect">إقران واتصال</string>
+    <string name="connected_to">متصل بـ %1$s</string>
+    <string name="btn_lock">قفل الكمبيوتر</string>
+    <string name="title_apps">التحكم في التطبيقات</string>
+    <string name="apps_hint">اضغط على تطبيق لقفله أو فتحه.</string>
+    <string name="btn_refresh">تحديث التطبيقات</string>
+    <string name="btn_unpair">إلغاء الإقران</string>
+    <string name="btn_uninstall">إزالة الوكيل من الكمبيوتر</string>
+    <string name="hint_search">ابحث عن تطبيق</string>
+    <string name="connecting">جارٍ الاتصال...</string>
+    <string name="enter_ip_pin">أدخل عنوان IP للكمبيوتر ورمز PIN من 6 أرقام</string>
+    <string name="wrong_pin">رمز PIN غير صحيح</string>
+    <string name="could_not_connect">تعذّر الاتصال: %1$s</string>
+    <string name="not_connected">غير متصل</string>
+    <string name="pc_locked">تم قفل الكمبيوتر</string>
+    <string name="lock_failed">فشل القفل</string>
+    <string name="reconnecting">انقطع الاتصال - جارٍ إعادة الاتصال...</string>
+    <string name="uninstalled_msg">تمت إزالة الوكيل من الكمبيوتر.</string>
+    <string name="dlg_title">إزالة الوكيل؟</string>
+    <string name="dlg_msg">سيؤدي هذا إلى إزالة وكيل الرقابة الأبوية ومهمة بدء التشغيل وجميع الإعدادات من الكمبيوتر. سيتوقف قفل التطبيقات فورًا.</string>
+    <string name="dlg_ok">إزالة</string>
+    <string name="dlg_cancel">إلغاء</string>
+</resources>

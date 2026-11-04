@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Parental Control"
+            android:text="@string/app_name"
             android:textSize="26sp"
             android:textStyle="bold" />
 
@@ -24,21 +24,21 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="24dp"
             android:gravity="center"
-            android:text="Enter the PC's local IP address and the 6-digit PIN shown when the agent was installed." />
+            android:text="@string/pair_intro" />
 
         <EditText
             android:id="@+id/ipInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:digits="0123456789."
-            android:hint="PC IP address (e.g. 192.168.1.20)"
+            android:hint="@string/hint_ip"
             android:inputType="phone" />
 
         <EditText
             android:id="@+id/pinInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="6-digit PIN"
+            android:hint="@string/hint_pin"
             android:inputType="numberPassword"
             android:maxLength="6" />
 
@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Pair and connect" />
+            android:text="@string/btn_connect" />
 
         <TextView
             android:id="@+id/pairStatus"
@@ -70,27 +70,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="4dp"
-            android:text="Connected" />
+            android:text="@string/connecting" />
 
         <Button
             android:id="@+id/lockBtn"
             android:layout_width="match_parent"
             android:layout_height="72dp"
-            android:text="Lock PC"
+            android:text="@string/btn_lock"
             android:textSize="20sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Application Control"
+            android:text="@string/title_apps"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tap an app to lock or unlock it." />
+            android:text="@string/apps_hint" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -102,28 +102,28 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Refresh apps" />
+                android:text="@string/btn_refresh" />
 
             <Button
                 android:id="@+id/unpairBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Unpair" />
+                android:text="@string/btn_unpair" />
         </LinearLayout>
 
         <Button
             android:id="@+id/uninstallBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Uninstall agent from PC"
+            android:text="@string/btn_uninstall"
             android:textColor="#C62828" />
 
         <EditText
             android:id="@+id/searchInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search apps"
+            android:hint="@string/hint_search"
             android:inputType="text" />
 
         <androidx.recyclerview.widget.RecyclerView
