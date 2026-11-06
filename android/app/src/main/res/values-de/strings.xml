@@ -29,4 +29,10 @@
     <string name="btn_unlock">PC entsperren</string>
     <string name="pc_unlocked">PC entsperrt</string>
     <string name="pair_network_note">Beide Geräte müssen sich im selben WLAN befinden, um sich zu koppeln.</string>
+    <string name="btn_find_pc">PC automatisch suchen</string>
+    <string name="btn_manual_ip">IP stattdessen manuell eingeben</string>
+    <string name="finding_pc">PC wird gesucht...</string>
+    <string name="pc_found">PC gefunden</string>
+    <string name="pc_not_found">Kein PC gefunden. Stelle sicher, dass beide Geräte im selben WLAN sind, oder gib die IP manuell ein.</string>
+    <string name="choose_language">Sprache wählen</string>
 </resources>

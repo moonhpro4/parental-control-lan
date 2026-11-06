@@ -29,6 +29,9 @@ import winreg
 
 APP = "ParentalAgent"
 PORT = 354
+DISCOVERY_PORT = 355
+DISCOVERY_PING = b"PARENTALAGENT_DISCOVER"
+DISCOVERY_PONG = b"PARENTALAGENT_HERE"
 CREATE_NO_WINDOW = 0x08000000
 
 DATA_DIR = Path(os.environ.get("ProgramData", r"C:\ProgramData")) / APP
@@ -188,6 +191,9 @@ def install():
     run(["netsh", "advfirewall", "firewall", "delete", "rule", f"name={APP}"])
     run(["netsh", "advfirewall", "firewall", "add", "rule", f"name={APP}", "dir=in", "action=allow",
          "protocol=TCP", f"localport={PORT}", "profile=any"])
+    run(["netsh", "advfirewall", "firewall", "delete", "rule", f"name={APP}Discovery"])
+    run(["netsh", "advfirewall", "firewall", "add", "rule", f"name={APP}Discovery", "dir=in", "action=allow",
+         "protocol=UDP", f"localport={DISCOVERY_PORT}", "profile=any"])
 
     run(["schtasks", "/run", "/tn", APP])
     msgbox(f"{APP} is installed and running.\n\n"
@@ -207,6 +213,7 @@ def uninstall():
     run(["schtasks", "/end", "/tn", APP])
     run(["schtasks", "/delete", "/tn", APP, "/f"])
     run(["netsh", "advfirewall", "firewall", "delete", "rule", f"name={APP}"])
+    run(["netsh", "advfirewall", "firewall", "delete", "rule", f"name={APP}Discovery"])
     bat = Path(WIN_DIR) / "Temp" / "pa_cleanup.bat"
     bat.write_text(
         "@echo off\r\n"
@@ -479,15 +486,21 @@ def installed_apps():
         except Exception:
             pass
 
-    # Folder scan so that apps without registry entries (portable apps, games, per-user installs) show up too.
+    # Folder scan so that apps without registry entries (portable apps, launchers, per-user installs,
+    # games like Roblox/Minecraft launchers which nest several folders deep) show up too.
     skip_dirs = {"windowsapps", "common files", "installer", "windows defender", "windows nt",
-                 "microsoft.net", "reference assemblies", "windowspowershell", "temp", "cache", "crashpad"}
+                 "microsoft.net", "reference assemblies", "windowspowershell", "temp", "cache", "crashpad",
+                 "nvidia", "amd", "intel", "packages", "connecteddevicesplatform", "diagnostics"}
     roots = [os.environ.get("ProgramFiles"), os.environ.get("ProgramFiles(x86)")]
     users = Path(os.environ.get("SystemDrive", "C:") + "\\Users")
     try:
         for u in users.iterdir():
+            if u.name.lower() in ("public", "default", "default user", "all users"):
+                continue
             roots.append(str(u / "AppData" / "Local" / "Programs"))
             roots.append(str(u / "AppData" / "Local"))
+            roots.append(str(u / "AppData" / "Roaming"))
+            roots.append(str(u / "Desktop"))
     except OSError:
         pass
     count = 0
@@ -497,12 +510,12 @@ def installed_apps():
         base_depth = root.rstrip("\\").count("\\")
         for dirpath, dirnames, filenames in os.walk(root):
             depth = dirpath.count("\\") - base_depth
-            dirnames[:] = [d for d in dirnames if d.lower() not in skip_dirs] if depth < 3 else []
+            dirnames[:] = [d for d in dirnames if d.lower() not in skip_dirs] if depth < 6 else []
             for fn in filenames:
                 if fn.lower().endswith(".exe"):
                     add(None, fn)
                     count += 1
-            if count > 4000:
+            if count > 8000:
                 break
 
     return sorted(({"name": v, "exe": k} for k, v in found.items()), key=lambda a: a["name"].lower())
@@ -535,6 +548,31 @@ def is_locked_out(ip):
 def note_fail(ip):
     c, t = fails.get(ip, (0, time.time()))
     fails[ip] = (c + 1, t if c else time.time())
+
+
+class DiscoveryProtocol(asyncio.DatagramProtocol):
+    def connection_made(self, transport):
+        self.transport = transport
+
+    def datagram_received(self, data, addr):
+        if data == DISCOVERY_PING:
+            self.transport.sendto(DISCOVERY_PONG, addr)
+
+
+async def run_discovery_responder():
+    loop = asyncio.get_running_loop()
+    while True:
+        try:
+            transport, _ = await loop.create_datagram_endpoint(
+                DiscoveryProtocol, local_addr=("0.0.0.0", DISCOVERY_PORT),
+                allow_broadcast=True)
+            try:
+                await asyncio.Future()
+            finally:
+                transport.close()
+        except OSError:
+            log.exception("discovery bind failed, retrying")
+            await asyncio.sleep(3)
 
 
 async def serve(state):
@@ -635,6 +673,7 @@ async def serve(state):
                     state.devices.pop(ip, None)
                 write_devices(state)
 
+    asyncio.create_task(run_discovery_responder())
     while True:
         try:
             async with websockets.serve(handler, "0.0.0.0", PORT, ping_interval=10, ping_timeout=10,

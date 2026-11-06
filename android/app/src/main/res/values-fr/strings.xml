@@ -29,4 +29,10 @@
     <string name="btn_unlock">Déverrouiller le PC</string>
     <string name="pc_unlocked">PC déverrouillé</string>
     <string name="pair_network_note">Les deux appareils doivent être sur le même réseau Wi-Fi pour s\'associer.</string>
+    <string name="btn_find_pc">Trouver le PC automatiquement</string>
+    <string name="btn_manual_ip">Saisir l\'IP manuellement</string>
+    <string name="finding_pc">Recherche du PC...</string>
+    <string name="pc_found">PC trouvé</string>
+    <string name="pc_not_found">Aucun PC trouvé. Vérifiez que les deux appareils sont sur le même Wi-Fi, ou saisissez l\'IP manuellement.</string>
+    <string name="choose_language">Choisir la langue</string>
 </resources>

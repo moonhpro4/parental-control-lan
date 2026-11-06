@@ -29,4 +29,10 @@
     <string name="btn_unlock">Desbloquear PC</string>
     <string name="pc_unlocked">PC desbloqueado</string>
     <string name="pair_network_note">Ambos dispositivos deben estar en la misma red Wi-Fi para vincularse.</string>
+    <string name="btn_find_pc">Buscar el PC automáticamente</string>
+    <string name="btn_manual_ip">Introducir la IP manualmente</string>
+    <string name="finding_pc">Buscando tu PC...</string>
+    <string name="pc_found">PC encontrado</string>
+    <string name="pc_not_found">No se encontró ningún PC. Asegúrate de que ambos dispositivos estén en la misma Wi-Fi, o introduce la IP manualmente.</string>
+    <string name="choose_language">Elegir idioma</string>
 </resources>

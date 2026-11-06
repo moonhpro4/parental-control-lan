@@ -6,7 +6,11 @@
 
 ## Install
 1. Run `ParentalAgent.exe` on the child's PC once, accept the UAC prompt. A dialog shows the PC's IP and the PIN.
-2. Install `ParentalControl.apk` on the parent's phone (same Wi-Fi), enter the IP + PIN.
+2. Install `ParentalControl.apk` on the parent's phone, same Wi-Fi as the PC, enter just the PIN.
+   The app finds the PC automatically via a UDP broadcast on port 355 - no need to type the IP, and it
+   keeps working even if the router later gives the PC a new IP. Manual IP entry is still available
+   (tap "Enter IP manually instead") as a fallback if broadcast is blocked on your network.
+3. Tap the globe icon top-right to set the app's language regardless of the phone's system language.
 
 Protocol: the PIN never crosses the network; the agent sends a random nonce and the app answers with HMAC-SHA256(PIN, nonce).
 Traffic is otherwise unencrypted ws:// on the local network. Only use on a trusted LAN.

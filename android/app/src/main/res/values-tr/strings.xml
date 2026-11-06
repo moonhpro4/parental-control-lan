@@ -29,4 +29,10 @@
     <string name="btn_unlock">Bilgisayarın kilidini aç</string>
     <string name="pc_unlocked">Bilgisayarın kilidi açıldı</string>
     <string name="pair_network_note">Eşleştirmek için her iki cihaz da aynı Wi-Fi ağında olmalıdır.</string>
+    <string name="btn_find_pc">Bilgisayarı otomatik bul</string>
+    <string name="btn_manual_ip">Bunun yerine IP\'yi elle gir</string>
+    <string name="finding_pc">Bilgisayar aranıyor...</string>
+    <string name="pc_found">Bilgisayar bulundu</string>
+    <string name="pc_not_found">Bilgisayar bulunamadı. Her iki cihazın da aynı Wi-Fi\'de olduğundan emin olun veya IP\'yi elle girin.</string>
+    <string name="choose_language">Dil seçin</string>
 </resources>

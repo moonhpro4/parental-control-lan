@@ -29,4 +29,10 @@
     <string name="btn_unlock">Разблокировать ПК</string>
     <string name="pc_unlocked">ПК разблокирован</string>
     <string name="pair_network_note">Для сопряжения оба устройства должны быть в одной сети Wi-Fi.</string>
+    <string name="btn_find_pc">Найти ПК автоматически</string>
+    <string name="btn_manual_ip">Ввести IP вручную</string>
+    <string name="finding_pc">Поиск ПК...</string>
+    <string name="pc_found">ПК найден</string>
+    <string name="pc_not_found">ПК не найден. Убедитесь, что оба устройства в одной сети Wi-Fi, или введите IP вручную.</string>
+    <string name="choose_language">Выбрать язык</string>
 </resources>

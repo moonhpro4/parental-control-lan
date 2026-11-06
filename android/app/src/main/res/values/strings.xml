@@ -29,4 +29,10 @@
     <string name="btn_unlock">Unlock PC</string>
     <string name="pc_unlocked">PC unlocked</string>
     <string name="pair_network_note">Both devices must be on the same Wi-Fi network to pair.</string>
+    <string name="btn_find_pc">Find PC automatically</string>
+    <string name="btn_manual_ip">Enter IP manually instead</string>
+    <string name="finding_pc">Searching for your PC...</string>
+    <string name="pc_found">PC found</string>
+    <string name="pc_not_found">No PC found. Make sure both devices are on the same Wi-Fi, or enter the IP manually.</string>
+    <string name="choose_language">Choose language</string>
 </resources>

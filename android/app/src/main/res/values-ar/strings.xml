@@ -29,4 +29,10 @@
     <string name="btn_unlock">فتح قفل الكمبيوتر</string>
     <string name="pc_unlocked">تم فتح قفل الكمبيوتر</string>
     <string name="pair_network_note">يجب أن يكون كلا الجهازين على نفس شبكة Wi-Fi للإقران.</string>
+    <string name="btn_find_pc">العثور على الكمبيوتر تلقائيًا</string>
+    <string name="btn_manual_ip">إدخال عنوان IP يدويًا بدلاً من ذلك</string>
+    <string name="finding_pc">جارٍ البحث عن الكمبيوتر...</string>
+    <string name="pc_found">تم العثور على الكمبيوتر</string>
+    <string name="pc_not_found">لم يتم العثور على كمبيوتر. تأكد من أن كلا الجهازين على نفس شبكة Wi-Fi، أو أدخل عنوان IP يدويًا.</string>
+    <string name="choose_language">اختر اللغة</string>
 </resources>
