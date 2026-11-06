@@ -28,4 +28,5 @@
     <string name="dlg_cancel">Cancel</string>
     <string name="btn_unlock">Unlock PC</string>
     <string name="pc_unlocked">PC unlocked</string>
+    <string name="pair_network_note">Both devices must be on the same Wi-Fi network to pair.</string>
 </resources>

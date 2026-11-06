@@ -28,4 +28,5 @@
     <string name="dlg_cancel">Abbrechen</string>
     <string name="btn_unlock">PC entsperren</string>
     <string name="pc_unlocked">PC entsperrt</string>
+    <string name="pair_network_note">Beide Geräte müssen sich im selben WLAN befinden, um sich zu koppeln.</string>
 </resources>

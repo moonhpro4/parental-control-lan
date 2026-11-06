@@ -1,11 +1,10 @@
 package com.parentalcontrol.app
 
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
 class AppAdapter(private val onTap: (AppInfo, Boolean) -> Unit) :
@@ -49,16 +48,13 @@ class AppAdapter(private val onTap: (AppInfo, Boolean) -> Unit) :
 
     override fun onBindViewHolder(h: VH, position: Int) {
         val app = items[position]
+        val ctx = h.itemView.context
         val locked = blocked.contains(app.exe.lowercase())
         h.name.text = app.name
         h.exe.text = app.exe
-        h.state.text = if (locked) "LOCKED" else "Unlocked"
-        h.state.setTextColor(if (locked) Color.parseColor("#C62828") else Color.parseColor("#2E7D32"))
-        h.itemView.background = GradientDrawable().apply {
-            cornerRadius = 24f
-            setColor(if (locked) Color.parseColor("#FDE0E0") else Color.parseColor("#E3F5E6"))
-            setStroke(3, if (locked) Color.parseColor("#E57373") else Color.parseColor("#81C784"))
-        }
+        h.state.text = if (locked) "\u25CF LOCKED" else "\u2713 Unlocked"
+        h.state.setTextColor(ContextCompat.getColor(ctx, if (locked) R.color.danger else R.color.success))
+        h.itemView.setBackgroundResource(if (locked) R.drawable.card_bg_locked else R.drawable.card_bg_unlocked)
         h.itemView.setOnClickListener { onTap(app, !locked) }
     }
 }

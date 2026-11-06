@@ -184,7 +184,9 @@ def install():
     msgbox(f"{APP} is installed and running.\n\n"
            f"PC IP address:  {local_ip()}\n"
            f"Pairing PIN:    {cfg['pin']}\n\n"
-           f"Enter these in the Android app. It starts automatically at every boot.")
+           f"Enter these in the Android app. It starts automatically at every boot.\n\n"
+           f"Note: the phone and this PC must be on the same Wi-Fi network to pair. "
+           f"After pairing once, you'll be able to use the app from anywhere.")
 
 
 CLEANUP_TASK = "ParentalAgentCleanup"

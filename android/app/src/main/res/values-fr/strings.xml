@@ -28,4 +28,5 @@
     <string name="dlg_cancel">Annuler</string>
     <string name="btn_unlock">Déverrouiller le PC</string>
     <string name="pc_unlocked">PC déverrouillé</string>
+    <string name="pair_network_note">Les deux appareils doivent être sur le même réseau Wi-Fi pour s'associer.</string>
 </resources>

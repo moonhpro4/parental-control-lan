@@ -28,4 +28,5 @@
     <string name="dlg_cancel">Отмена</string>
     <string name="btn_unlock">Разблокировать ПК</string>
     <string name="pc_unlocked">ПК разблокирован</string>
+    <string name="pair_network_note">Для сопряжения оба устройства должны быть в одной сети Wi-Fi.</string>
 </resources>

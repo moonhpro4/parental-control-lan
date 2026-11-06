@@ -28,4 +28,5 @@
     <string name="dlg_cancel">İptal</string>
     <string name="btn_unlock">Bilgisayarın kilidini aç</string>
     <string name="pc_unlocked">Bilgisayarın kilidi açıldı</string>
+    <string name="pair_network_note">Eşleştirmek için her iki cihaz da aynı Wi-Fi ağında olmalıdır.</string>
 </resources>

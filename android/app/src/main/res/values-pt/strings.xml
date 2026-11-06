@@ -28,4 +28,5 @@
     <string name="dlg_cancel">Cancelar</string>
     <string name="btn_unlock">Desbloquear PC</string>
     <string name="pc_unlocked">PC desbloqueado</string>
+    <string name="pair_network_note">Os dois dispositivos devem estar na mesma rede Wi-Fi para parear.</string>
 </resources>

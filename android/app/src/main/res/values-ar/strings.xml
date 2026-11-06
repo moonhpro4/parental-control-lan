@@ -28,4 +28,5 @@
     <string name="dlg_cancel">إلغاء</string>
     <string name="btn_unlock">فتح قفل الكمبيوتر</string>
     <string name="pc_unlocked">تم فتح قفل الكمبيوتر</string>
+    <string name="pair_network_note">يجب أن يكون كلا الجهازين على نفس شبكة Wi-Fi للإقران.</string>
 </resources>

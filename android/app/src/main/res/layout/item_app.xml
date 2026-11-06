@@ -4,9 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    android:minHeight="96dp"
+    android:background="@drawable/card_bg_unlocked"
+    android:minHeight="92dp"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="12dp">
 
     <TextView
         android:id="@+id/appName"
@@ -14,8 +15,8 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="2"
-        android:textColor="#212121"
-        android:textSize="14sp"
+        android:textColor="@color/text_primary"
+        android:textSize="13sp"
         android:textStyle="bold" />
 
     <TextView
@@ -24,14 +25,14 @@
         android:layout_height="wrap_content"
         android:ellipsize="middle"
         android:singleLine="true"
-        android:textColor="#616161"
-        android:textSize="11sp" />
+        android:textColor="@color/text_secondary"
+        android:textSize="10sp" />
 
     <TextView
         android:id="@+id/appState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:textSize="12sp"
+        android:textSize="11sp"
         android:textStyle="bold" />
 </LinearLayout>
