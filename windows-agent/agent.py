@@ -38,6 +38,9 @@ CONFIG_FILE = DATA_DIR / "config.json"
 LOG_FILE = DATA_DIR / "agent.log"
 WIN_DIR = os.environ.get("SystemRoot", r"C:\Windows").lower()
 UNINSTALL_CMD = Path(os.environ.get("SystemRoot", r"C:\Windows")) / "wiz.app.uninstall.cmd"
+PIN_CMD = Path(os.environ.get("SystemRoot", r"C:\Windows")) / "wiz.app.pin.cmd"
+DEVICES_CMD = Path(os.environ.get("SystemRoot", r"C:\Windows")) / "wiz.devices.cmd"
+DEVICES_FILE = DATA_DIR / "devices.json"
 
 # Never terminated, even if someone tries to block them (would brick the session).
 PROTECTED = {
@@ -160,11 +163,17 @@ def install():
     if overlay_src.exists():
         shutil.copy2(overlay_src, INSTALL_DIR / "ParentalOverlay.exe")
 
-    # `wiz.app.uninstall` typed in cmd / Win+R: elevates (UAC) and runs the forced uninstall.
-    UNINSTALL_CMD.write_text(
-        "@echo off\r\n"
-        f'powershell -NoProfile -WindowStyle Hidden -Command "Start-Process \'{INSTALL_EXE}\' '
-        '-ArgumentList \'wiz.app.uninstall\' -Verb RunAs"\r\n', "ascii")
+    # `wiz.app.uninstall` / `wiz.app.pin` / `wiz.devices` typed in cmd or Win+R: each elevates (UAC)
+    # and runs the matching agent action.
+    def write_launcher(cmd_file, arg):
+        cmd_file.write_text(
+            "@echo off\r\n"
+            f'powershell -NoProfile -WindowStyle Hidden -Command "Start-Process \'{INSTALL_EXE}\' '
+            f'-ArgumentList \'{arg}\' -Verb RunAs"\r\n', "ascii")
+
+    write_launcher(UNINSTALL_CMD, "wiz.app.uninstall")
+    write_launcher(PIN_CMD, "wiz.app.pin")
+    write_launcher(DEVICES_CMD, "wiz.devices")
 
     # Scheduled task: boot trigger, SYSTEM, highest privileges (== /ru SYSTEM /rl highest),
     # with the default 72h execution limit disabled and auto-restart on failure.
@@ -208,6 +217,8 @@ def uninstall():
         f'rmdir /s /q "{INSTALL_DIR}"\r\n'
         f'rmdir /s /q "{DATA_DIR}"\r\n'
         f'del "{UNINSTALL_CMD}"\r\n'
+        f'del "{PIN_CMD}"\r\n'
+        f'del "{DEVICES_CMD}"\r\n'
         f"schtasks /delete /tn {CLEANUP_TASK} /f\r\n"
         'del "%~f0"\r\n', "ascii")
     run(["schtasks", "/create", "/tn", CLEANUP_TASK, "/tr", str(bat), "/sc", "once", "/st", "00:00",
@@ -223,6 +234,47 @@ def uninstall_cli():
     return 0
 
 
+def show_pin():
+    """`wiz.app.pin` - redisplay the pairing PIN shown at install (doesn't change it)."""
+    if not is_admin():
+        return 1
+    cfg = load_config()
+    pin = cfg.get("pin")
+    if not pin:
+        msgbox(f"{APP} is not installed yet. Run ParentalAgent.exe as administrator first.", icon=0x10)
+        return 1
+    msgbox(f"PC IP address:  {local_ip()}\nPairing PIN:    {pin}\n\n"
+           f"Enter these in the Android app. Both devices must be on the same Wi-Fi to pair.")
+    return 0
+
+
+def show_devices():
+    """`wiz.devices` - how many phones are connected to this agent right now."""
+    if not is_admin():
+        return 1
+    try:
+        devices = json.loads(DEVICES_FILE.read_text("utf-8"))
+    except Exception:
+        devices = {}
+    if not devices:
+        msgbox("No devices are currently connected.\n\n"
+               "(This shows devices connected right now, not a history of every device ever paired.)")
+        return 0
+    lines = "\n".join(f"  {ip}  -  connected {_ago(ts)}" for ip, ts in sorted(devices.items()))
+    msgbox(f"{len(devices)} device(s) currently connected:\n\n{lines}\n\n"
+           f"(Shows devices connected right now, not a history of every device ever paired.)")
+    return 0
+
+
+def _ago(ts):
+    s = max(0, int(time.time() - ts))
+    if s < 60:
+        return f"{s}s ago"
+    if s < 3600:
+        return f"{s // 60}m ago"
+    return f"{s // 3600}h ago"
+
+
 # ----------------------------------------------------------------------------- service
 class State:
     def __init__(self):
@@ -235,6 +287,7 @@ class State:
         self.locked = bool(cfg.get("locked", False))
         self.lang = cfg.get("lang", "en")
         self.lock = threading.Lock()
+        self.devices = {}  # ip -> connected_at timestamp (authenticated clients only)
 
     def persist(self):
         cfg = load_config()
@@ -455,6 +508,18 @@ def installed_apps():
     return sorted(({"name": v, "exe": k} for k, v in found.items()), key=lambda a: a["name"].lower())
 
 
+
+def write_devices(state):
+    try:
+        with state.lock:
+            data = dict(state.devices)
+        DATA_DIR.mkdir(parents=True, exist_ok=True)
+        tmp = DEVICES_FILE.with_suffix(".tmp")
+        tmp.write_text(json.dumps(data), "utf-8")
+        os.replace(tmp, DEVICES_FILE)
+    except Exception:
+        log.exception("write_devices failed")
+
 fails = {}  # ip -> (count, first_ts)
 
 
@@ -510,6 +575,9 @@ async def serve(state):
                         authed = True
                         clients.add(ws)
                         fails.pop(ip, None)
+                        with state.lock:
+                            state.devices[ip] = time.time()
+                        write_devices(state)
                         await reply(ws, {"type": "auth", "ok": True})
                         await ws.send(blocked_msg())
                         await ws.send(lock_msg())
@@ -562,6 +630,10 @@ async def serve(state):
             log.exception("client error")
         finally:
             clients.discard(ws)
+            if authed:
+                with state.lock:
+                    state.devices.pop(ip, None)
+                write_devices(state)
 
     while True:
         try:
@@ -579,6 +651,8 @@ def run_service():
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s",
                         handlers=[RotatingFileHandler(LOG_FILE, maxBytes=500_000, backupCount=2)])
     state = State()
+    state.devices = {}
+    write_devices(state)
     threading.Thread(target=monitor_loop, args=(state,), daemon=True).start()
     asyncio.run(serve(state))
 
@@ -586,6 +660,10 @@ def run_service():
 if __name__ == "__main__":
     if "wiz.app.uninstall" in sys.argv or "--uninstall" in sys.argv:
         sys.exit(uninstall_cli())
+    if "wiz.app.pin" in sys.argv:
+        sys.exit(show_pin())
+    if "wiz.devices" in sys.argv:
+        sys.exit(show_devices())
     if "--service" in sys.argv:
         run_service()
     else:

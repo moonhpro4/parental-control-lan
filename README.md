@@ -10,3 +10,9 @@
 
 Protocol: the PIN never crosses the network; the agent sends a random nonce and the app answers with HMAC-SHA256(PIN, nonce).
 Traffic is otherwise unencrypted ws:// on the local network. Only use on a trusted LAN.
+
+## Commands (type in cmd or Win+R; each asks for admin approval via UAC)
+- `wiz.app.uninstall` - removes the agent, its startup task, firewall rule and all files.
+- `wiz.app.pin` - shows the PC's IP and the current pairing PIN again (doesn't change it).
+- `wiz.devices` - shows which phones are connected right now. Not a history of every device ever
+  paired - the agent doesn't keep one; any phone with the current PIN can connect.
