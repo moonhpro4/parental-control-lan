@@ -35,4 +35,18 @@
     <string name="pc_found">PC gefunden</string>
     <string name="pc_not_found">Kein PC gefunden. Stelle sicher, dass beide Geräte im selben WLAN sind, oder gib die IP manuell ein.</string>
     <string name="choose_language">Sprache wählen</string>
+    <string name="btn_view_screen">PC-Bildschirm anzeigen</string>
+    <string name="btn_block_sites">Websites sperren</string>
+    <string name="title_sites">Website-Sperre</string>
+    <string name="sites_hint">Website eingeben und Enter drücken, um sie auf diesem PC zu sperren.</string>
+    <string name="hint_site">z. B. beispiel.de</string>
+    <string name="btn_add">Hinzufügen</string>
+    <string name="blocked_sites_hint">Gesperrte Websites - ✕ antippen zum Entsperren</string>
+    <string name="btn_exit">Beenden</string>
+    <string name="mode_touchscreen">Touchscreen</string>
+    <string name="mode_trackpad">Trackpad</string>
+    <string name="btn_keyboard">Tastatur</string>
+    <string name="btn_right_click">Rechtsklick</string>
+    <string name="status_online">Online</string>
+    <string name="status_offline">Offline</string>
 </resources>

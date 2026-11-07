@@ -15,5 +15,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ScreenViewActivity"
+            android:exported="false"
+            android:screenOrientation="userLandscape"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".SiteBlockActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 </manifest>

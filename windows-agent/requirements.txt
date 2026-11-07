@@ -2,3 +2,5 @@ psutil
 websockets==12.0
 pywin32
 pyinstaller
+pillow
+pystray

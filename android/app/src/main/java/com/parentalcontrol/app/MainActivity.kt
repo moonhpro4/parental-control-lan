@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity(), AgentClient.Listener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         client = AgentClient(this)
+        AgentSession.client = client
 
         pairLayout = findViewById(R.id.pairLayout)
         controlLayout = findViewById(R.id.controlLayout)
@@ -112,6 +113,20 @@ class MainActivity : AppCompatActivity(), AgentClient.Listener {
         }
         findViewById<Button>(R.id.lockBtn).setOnClickListener {
             if (!client.lock()) toast(getString(R.string.not_connected))
+        }
+        findViewById<Button>(R.id.viewScreenBtn).setOnClickListener {
+            if (!everAuthed) {
+                toast(getString(R.string.not_connected))
+            } else {
+                startActivity(android.content.Intent(this, ScreenViewActivity::class.java))
+            }
+        }
+        findViewById<Button>(R.id.blockSitesBtn).setOnClickListener {
+            if (!everAuthed) {
+                toast(getString(R.string.not_connected))
+            } else {
+                startActivity(android.content.Intent(this, SiteBlockActivity::class.java))
+            }
         }
         findViewById<Button>(R.id.unlockBtn).setOnClickListener {
             if (!client.unlock()) toast(getString(R.string.not_connected))
@@ -224,6 +239,10 @@ class MainActivity : AppCompatActivity(), AgentClient.Listener {
         runOnUiThread { toast(getString(if (ok) R.string.pc_locked else R.string.lock_failed)) }
     }
 
+    override fun onFrame(data: ByteArray) {}
+
+    override fun onSites(sites: List<String>) {}
+
     override fun onLockState(locked: Boolean) {
         runOnUiThread {
             findViewById<Button>(R.id.lockBtn).isEnabled = !locked
@@ -262,6 +281,11 @@ class MainActivity : AppCompatActivity(), AgentClient.Listener {
                 }, 2000)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        AgentSession.client?.setListener(this)
     }
 
     override fun onDestroy() {

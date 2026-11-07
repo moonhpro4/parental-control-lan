@@ -35,4 +35,18 @@
     <string name="pc_found">PC trouvé</string>
     <string name="pc_not_found">Aucun PC trouvé. Vérifiez que les deux appareils sont sur le même Wi-Fi, ou saisissez l\'IP manuellement.</string>
     <string name="choose_language">Choisir la langue</string>
+    <string name="btn_view_screen">Voir l\'écran du PC</string>
+    <string name="btn_block_sites">Bloquer des sites</string>
+    <string name="title_sites">Blocage de sites</string>
+    <string name="sites_hint">Saisissez un site et appuyez sur Entrée pour le bloquer sur ce PC.</string>
+    <string name="hint_site">ex. exemple.com</string>
+    <string name="btn_add">Ajouter</string>
+    <string name="blocked_sites_hint">Sites bloqués - touchez ✕ pour débloquer</string>
+    <string name="btn_exit">Quitter</string>
+    <string name="mode_touchscreen">Tactile</string>
+    <string name="mode_trackpad">Pavé tactile</string>
+    <string name="btn_keyboard">Clavier</string>
+    <string name="btn_right_click">Clic droit</string>
+    <string name="status_online">En ligne</string>
+    <string name="status_offline">Hors ligne</string>
 </resources>

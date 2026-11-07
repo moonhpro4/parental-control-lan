@@ -21,7 +21,9 @@ jobs:
         working-directory: windows-agent
         run: |
           pyinstaller --onefile --noconsole --name ParentalOverlay overlay.py
-          pyinstaller --onefile --noconsole --uac-admin --name ParentalAgent --hidden-import win32timezone --add-data "dist/ParentalOverlay.exe;." agent.py
+          pyinstaller --onefile --noconsole --name ParentalDeny deny.py
+          pyinstaller --onefile --noconsole --name RainbowAgent --hidden-import PIL._tkinter_finder screenhelper.py
+          pyinstaller --onefile --noconsole --uac-admin --name ParentalAgent --hidden-import win32timezone --add-data "dist/ParentalOverlay.exe;." --add-data "dist/ParentalDeny.exe;." --add-data "dist/RainbowAgent.exe;." agent.py
       - uses: actions/upload-artifact@v4
         with:
           name: ParentalAgent-exe

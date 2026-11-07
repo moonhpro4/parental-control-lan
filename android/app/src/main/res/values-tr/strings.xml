@@ -35,4 +35,18 @@
     <string name="pc_found">Bilgisayar bulundu</string>
     <string name="pc_not_found">Bilgisayar bulunamadı. Her iki cihazın da aynı Wi-Fi\'de olduğundan emin olun veya IP\'yi elle girin.</string>
     <string name="choose_language">Dil seçin</string>
+    <string name="btn_view_screen">Bilgisayar ekranını görüntüle</string>
+    <string name="btn_block_sites">Web sitelerini engelle</string>
+    <string name="title_sites">Web Sitesi Engelleme</string>
+    <string name="sites_hint">Bir site yazıp bu bilgisayarda engellemek için Enter\'a basın.</string>
+    <string name="hint_site">örn. ornek.com</string>
+    <string name="btn_add">Ekle</string>
+    <string name="blocked_sites_hint">Engellenen siteler - kaldırmak için ✕ dokunun</string>
+    <string name="btn_exit">Çık</string>
+    <string name="mode_touchscreen">Dokunmatik ekran</string>
+    <string name="mode_trackpad">Trackpad</string>
+    <string name="btn_keyboard">Klavye</string>
+    <string name="btn_right_click">Sağ tıklama</string>
+    <string name="status_online">Çevrimiçi</string>
+    <string name="status_offline">Çevrimdışı</string>
 </resources>

@@ -35,4 +35,18 @@
     <string name="pc_found">ПК найден</string>
     <string name="pc_not_found">ПК не найден. Убедитесь, что оба устройства в одной сети Wi-Fi, или введите IP вручную.</string>
     <string name="choose_language">Выбрать язык</string>
+    <string name="btn_view_screen">Просмотр экрана ПК</string>
+    <string name="btn_block_sites">Блокировать сайты</string>
+    <string name="title_sites">Блокировка сайтов</string>
+    <string name="sites_hint">Введите сайт и нажмите Enter, чтобы заблокировать его на этом ПК.</string>
+    <string name="hint_site">напр. example.com</string>
+    <string name="btn_add">Добавить</string>
+    <string name="blocked_sites_hint">Заблокированные сайты - нажмите ✕ для разблокировки</string>
+    <string name="btn_exit">Выход</string>
+    <string name="mode_touchscreen">Сенсорный экран</string>
+    <string name="mode_trackpad">Трекпад</string>
+    <string name="btn_keyboard">Клавиатура</string>
+    <string name="btn_right_click">Правый клик</string>
+    <string name="status_online">В сети</string>
+    <string name="status_offline">Не в сети</string>
 </resources>

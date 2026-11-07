@@ -35,4 +35,18 @@
     <string name="pc_found">تم العثور على الكمبيوتر</string>
     <string name="pc_not_found">لم يتم العثور على كمبيوتر. تأكد من أن كلا الجهازين على نفس شبكة Wi-Fi، أو أدخل عنوان IP يدويًا.</string>
     <string name="choose_language">اختر اللغة</string>
+    <string name="btn_view_screen">عرض شاشة الكمبيوتر</string>
+    <string name="btn_block_sites">حظر المواقع</string>
+    <string name="title_sites">حظر المواقع</string>
+    <string name="sites_hint">اكتب موقعًا واضغط إدخال لحظره على هذا الكمبيوتر.</string>
+    <string name="hint_site">مثال example.com</string>
+    <string name="btn_add">إضافة</string>
+    <string name="blocked_sites_hint">المواقع المحظورة - اضغط ✕ لإلغاء الحظر</string>
+    <string name="btn_exit">خروج</string>
+    <string name="mode_touchscreen">شاشة لمس</string>
+    <string name="mode_trackpad">لوحة لمس</string>
+    <string name="btn_keyboard">لوحة المفاتيح</string>
+    <string name="btn_right_click">النقر بزر الماوس الأيمن</string>
+    <string name="status_online">متصل</string>
+    <string name="status_offline">غير متصل</string>
 </resources>
